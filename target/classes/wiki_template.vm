@@ -1,0 +1,21 @@
+jira url : ${url}
+
+#foreach( ${project} in ${projects} )
+    h1. ${project.title}
+	
+	h2. 이번주
+	#foreach( ${issue} in ${project.done} )
+		* ${issue.status} [${issue.title}|${issue.link}] - ${issue.assignee} - ${issue.created}
+	#end
+	
+	h2. 다음주(In Progress)
+	#foreach( ${issue} in ${project.todo} )
+		* [${issue.title}|${issue.link}] - ${issue.assignee} - ${issue.created}
+	#end
+
+	h2. 미정(Open)
+	#foreach( ${issue} in ${project.someday} )
+		* [${issue.title}|${issue.link}] - ${issue.assignee} - ${issue.created}
+	#end
+	
+#end
