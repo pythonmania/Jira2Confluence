@@ -1,6 +1,0 @@
-category = ${member}
- AND (((created >= ${start_date} AND created <= ${end_date})
-   OR (updated >= ${start_date} AND updated <= ${end_date}))
-   OR (status in ("In Progress", "Open")))
- AND assignee in membersOf(${member})
- ORDER BY ${order}
