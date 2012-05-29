@@ -8,19 +8,6 @@ object DateUtil {
 
   val sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-  def getStartDate() = {
-    val cal = Calendar.getInstance()
-    cal.set(Calendar.WEEK_OF_YEAR, cal.get(Calendar.WEEK_OF_YEAR) - 1)
-    cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
-    sdf.format(cal.getTime())
-  }
-
-  def getEndDate() = {
-    val cal = Calendar.getInstance()
-    cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
-    sdf.format(cal.getTime())
-  }
-
   def getToday() = {
     import java.util.Date
     sdf.format(new Date)
@@ -37,11 +24,6 @@ object DateUtil {
       case e: ParseException =>
         ""
     }
-  }
-
-  def main(args: Array[String]) {
-    println(getStartDate)
-    println(getEndDate)
   }
 }
 
