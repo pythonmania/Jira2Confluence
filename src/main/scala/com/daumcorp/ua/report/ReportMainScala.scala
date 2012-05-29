@@ -244,7 +244,7 @@ object ReportMainScala {
   def publish(projectPageContent: String, personalPageContent: String) {
 
     // create pages
-    val currentPageTitle = DateUtil.getToday
+    val currentPageTitle = DateUtil.getToday()
     val currentProjectPageTitle = getCurrentProjectPageTitle()
     val currentPersonalPageTitle = getCurrentPersonalPageTitle()
 
