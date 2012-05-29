@@ -21,6 +21,11 @@ object DateUtil {
     sdf.format(cal.getTime())
   }
 
+  def getToday() = {
+    import java.util.Date
+    sdf.format(new Date)
+  }
+
   def convertDateFormat(dateStr: String) = {
     try {
       import java.util.Locale

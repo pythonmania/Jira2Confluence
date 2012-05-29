@@ -211,10 +211,6 @@ object ReportMainScala {
     "%s년 %d분기".format(year, quarter)
   }
 
-  def getCurrentPageTitle(startDate: String, endDate: String): String = {
-    (startDate + " ~ " + endDate)
-  }
-
   def getCurrentChildPageTitle(): String = {
     val calendar: Calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -247,11 +243,8 @@ object ReportMainScala {
 
   def publish(projectPageContent: String, personalPageContent: String) {
 
-    val startDate = DateUtil.getStartDate
-    val endDate = DateUtil.getEndDate
-
     // create pages
-    val currentPageTitle = getCurrentPageTitle(startDate, endDate)
+    val currentPageTitle = DateUtil.getToday
     val currentProjectPageTitle = getCurrentProjectPageTitle()
     val currentPersonalPageTitle = getCurrentPersonalPageTitle()
 
