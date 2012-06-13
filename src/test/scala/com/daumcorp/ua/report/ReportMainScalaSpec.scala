@@ -39,21 +39,20 @@ class ReportMainScalaSpec extends ShouldMatchers {
     lb = new ListBuffer[String]
   }
 
-  @Test def getCurrentIssue() {
-        val query = """
-project = UPDUSERREFACTOR AND plannedEnd >=-1w and plannedEnd <= 0d
-          """
-    import java.net.URLEncoder
+  @Test def movePageAttachments() {
+    // move attachment from '프로젝트 템플릿' to '2012년 24주차 프로젝트'
+    val originalPageId = getPageId("프로젝트 템플릿", None)
+    val newPageId = getPageId("2012년 24주차 프로젝트", None)
 
-    val requestURL = "http://issue.daumcorp.com/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=" +
-      URLEncoder.encode(query, "UTF-8")
-      
-    
+    val originalPageAttachmentsObj = client.execute("confluence1.getAttachments", seqAsJavaList(List(token, originalPageId)))
+    val originalPageAttachments = originalPageAttachmentsObj.asInstanceOf[Array[HashMap[String, AnyRef]]]
+    val att2 = originalPageAttachments.asInstanceOf[Array[Object]]
+    for (att <- att2) {
+      println(att)
+    }
+
   }
-  
-  @Test def getPlannedIssue() {
-    
-  }
+
   @Test(enabled = false) def crypt() {
     import org.jasypt.util.text._
     import org.jasypt.salt._
@@ -70,15 +69,6 @@ project = UPDUSERREFACTOR AND plannedEnd >=-1w and plannedEnd <= 0d
 
     println(myEncryptedText)
     println(plainText)
-  }
-
-  @Test(enabled = false) def storePage() {
-    val historyPageId: String = getPageId("과거이력", None)
-    val quarterPageId: String = getPageId("2012년 3분기", historyPageId)
-    val currentPageId: String = getPageId("2012-08-01 ~ 2012-08-07", quarterPageId)
-
-    val currentProjectPageId: String = getPageId("2012년 10주차 프로젝트", currentPageId)
-    val currentPersonalPageId: String = getPageId("2012년 10주차 개인업무", currentPageId)
   }
 
   def getPage(title: String, parentId: AnyRef): HashMap[String, AnyRef] = {

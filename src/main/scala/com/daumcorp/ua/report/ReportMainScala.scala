@@ -35,23 +35,24 @@ object ReportMainScala {
     confluenceLogin()
 
     // read project template page, extract target projects
-    val projectPageContent = getProjectPageContent();
+    val projectPageContent = getProjectPageContent().lines;
 
     // create project page
-    val projectPageRegex = ".*\\((.*)\\).*".r
+    val projectPageRegex = "h3. (.*) \\((.*)\\).*".r
     val projectPageContents = new StringBuilder
-    projectPageContent.lines.foreach(content => {
-      projectPageContents ++= content + "\n"
-      if (content.startsWith("h")) {
-        val projectPageRegex(projectId) = content
+    
+    projectPageContent foreach {
+      case projectPageRegex (project, projectId) => {
+        projectPageContents ++= "h3. " + project + " (" + projectId + ")"
         val projectPageXML = XML.load(makeRequestURL(projectPageQuery.format(projectId)))
         val projectPageIssues = xmlToIssues(projectPageXML)
-        val projectPageContent: StringBuilder = issuesToProjectPageContent(projectPageIssues)
-        print(projectPageContent)
+        val projectPageContent = issuesToProjectPageContent(projectPageIssues)
         projectPageContents ++= projectPageContent + "\n"
       }
-    })
-
+      case line => projectPageContents ++= line + "\n"
+    }
+    println(projectPageContents)
+    
     // create personal page
     val personalPageXML = XML.load(makeRequestURL(personalPageQuery))
     val personalPageIssues = xmlToIssues(personalPageXML)
