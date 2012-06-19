@@ -1,6 +1,8 @@
 package com.daumcorp.ua.report
 
 import org.testng.annotations.Test
+import com.daumcorp.ua.report.util.WikiUtil
+import com.daumcorp.ua.report.bean.Issue
 
 class PageContentMatchTest {
   @Test def testExtractProjects() {
@@ -9,7 +11,7 @@ class PageContentMatchTest {
     val regex = "h3. (.*)\\((.*)\\).*".r
     content2.lines foreach {
       case regex(project, projectId) => println(project + "\t" + projectId)
-      case line => 
+      case line =>
     }
     //    for (line <- content.lines) {
     //      if (line.startsWith("h")) {
@@ -18,12 +20,26 @@ class PageContentMatchTest {
     //      }
     //    }
   }
-val content2 = """h3. 회원정보 개편 2011112 (UPDUSERREFACTOR)
+
+  @Test def testEscapeWikiText() {
+    val result = WikiUtil.escapeWikiText("[SPDMNT-2467] [CS]로그인기록 서비스현황 그래프에서  \"$item.label\" 이라고 표시되는 경우");
+    println(result)
+  }
+
+  @Test def testErrorneusIssue() {
+    val issue = new Issue("[회원정보] 운영", "10365", "Open", "[SPDMNT-2467] [CS]로그인기록 서비스현황 그래프에서 \"item.label\" 이라고 표시되는 경우", "http://issue.daumcorp.com/browse/SPDMNT-2467", "김태석", "Fri, 15 Jun 2012 14:40:24 +0900", "Mon, 18 Jun 2012 11:49:35 +0900",
+      "", "", "인증")
+
+    println(issue.toProjectPageContent())
+//    println(issue.toPersonalPageContent())
+  }
+
+  val content2 = """h3. 회원정보 개편 2011112 (UPDUSERREFACTOR)
   h5. 회원정보 개편 2012222 (UPDUSERREFACTOR)
   h3. 회원정보 개편 2013332 (UPDUS한글ERREFACTOR)
   h3. 회원정보 개편 2014442 (UPDUSER__REFACTOR)
   """
-  
+
   val content = """h3. 회원정보 개편 2012 (UPDUSERREFACTOR)
 {iframe:src=http://110.45.227.147:9000/UPDUSERREFACTOR|width=100%|height=300px}
 {iframe}

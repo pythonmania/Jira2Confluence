@@ -1,6 +1,7 @@
 package com.daumcorp.ua.report.util
 
 import java.text.ParseException
+import org.clapper.scalasti.StringTemplate
 
 object DateUtil {
   import java.util.Calendar
@@ -28,25 +29,22 @@ object DateUtil {
 }
 
 object WikiUtil {
-  def escapeWikiText(src: String) =
+  def escapeWikiText(src: String): String = {
     src.replaceAll("\\[", "\\\\\\[").replaceAll("\\]", "\\\\\\]")
-
-  implicit def RichFormatter(string: String) = new {
-    def richFormat(replacement: Map[String, Any]) =
-      (string /: replacement) { (res, entry) => res.replaceAll("#\\{%s\\}".format(entry._1), WikiUtil.escapeWikiText(entry._2.toString)) }
   }
 
-  def makeSubtitle(subtitle: String, date1Title: String, date2Title: String) =
-    """{section}
+  val subtitleTemplate = new StringTemplate("""{section}
 {column:width=66%}
-{span:style=font-size:large;font-weight:bold;color:LimeGreen}#{subtitle}{span}
+{span:style=font-size:large;font-weight:bold;color:LimeGreen}$subtitle${span}
 {column}
 {column}
-{span:style=font-weight:bold;color:LimeGreen}#{date1Title}{span}
+{span:style=font-weight:bold;color:LimeGreen}$date1Title${span}
 {column}
 {column}
-{span:style=font-weight:bold;color:LimeGreen}#{date2Title}{span}
+{span:style=font-weight:bold;color:LimeGreen}$date2Title${span}
 {column}
-{section}""" richFormat Map("subtitle" -> subtitle, "date1Title" -> date1Title, "date2Title" -> date2Title)
+{section}""")
 
+  def makeSubtitle(subtitle: String, date1Title: String, date2Title: String): String =
+    subtitleTemplate.setAttributes(Map("subtitle" -> subtitle, "date1Title" -> date1Title, "date2Title" -> date2Title)) toString
 }

@@ -40,9 +40,9 @@ object ReportMainScala {
     // create project page
     val projectPageRegex = "h3. (.*) \\((.*)\\).*".r
     val projectPageContents = new StringBuilder
-    
+
     projectPageContent foreach {
-      case projectPageRegex (project, projectId) => {
+      case projectPageRegex(project, projectId) => {
         projectPageContents ++= "h3. " + project + " (" + projectId + ")"
         val projectPageXML = XML.load(makeRequestURL(projectPageQuery.format(projectId)))
         val projectPageIssues = xmlToIssues(projectPageXML)
@@ -52,7 +52,7 @@ object ReportMainScala {
       case line => projectPageContents ++= line + "\n"
     }
     println(projectPageContents)
-    
+
     // create personal page
     val personalPageXML = XML.load(makeRequestURL(personalPageQuery))
     val personalPageIssues = xmlToIssues(personalPageXML)
